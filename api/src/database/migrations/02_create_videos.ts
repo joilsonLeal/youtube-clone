@@ -10,12 +10,16 @@ export async function up(knex: Knex) {
         table.integer('likes').notNullable();
         table.integer('deslikes').notNullable();
         table.integer('views').notNullable();
-        table.date('created_at').notNullable();
+        table.timestamp('created_at')
+            .notNullable()
+            .defaultTo(knex.raw('CURRENT_TIMESTAMP'));
 
         table.integer('channel_id')
             .notNullable()
             .references('id')
-            .inTable('channels');
+            .inTable('channels')
+            .onDelete('CASCADE')
+            .onUpdate('CASCADE');
     });
 }
 

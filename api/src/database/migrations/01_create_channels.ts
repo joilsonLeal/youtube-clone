@@ -7,12 +7,17 @@ export async function up(knex: Knex) {
         table.string('avatar').notNullable();
         table.integer('subscribers').notNullable();
         table.string('description').notNullable();
-        table.date('createdAt').notNullable();
+        
+        table.timestamp('created_at')
+            .notNullable()
+            .defaultTo(knex.raw('CURRENT_TIMESTAMP'));
 
         table.integer('user_id')
             .notNullable()
             .references('id')
-            .inTable('users');
+            .inTable('users')
+            .onDelete('CASCADE')
+            .onUpdate('CASCADE');
     });
 }
 
